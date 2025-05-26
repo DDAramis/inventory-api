@@ -60,6 +60,6 @@ Tabla products creada con columnas id, name, price, y stock.
 Pendiente: Casos de uso, endpoints, CQRS, pruebas automatizadas, Docker, Sentry, Prometheus.
 
 Autor
-Aramis JakolicEmail: ajkdwb@gmail.com.com GitHub: https://github.com/DDAramis  Portafolio: aramisjakolic.com
+Aramis JakolicEmail: ajkdwb@gmail.com.com GitHub: https://github.com/DDAramis/inventory-api.git  Portafolio: aramisjakolic.com
 Licencia
 Este proyecto está licenciado bajo la Licencia MIT.
