@@ -1,0 +1,15 @@
+# Entorno virtual
+venv/
+__pycache__/
+*.pyc
+
+# Archivos de entorno
+.env
+
+# Archivos de desarrollo
+*.log
+.vscode/
+.idea/
+
+# Archivos de compilación de Docker (si aplican más adelante)
+*.docker
