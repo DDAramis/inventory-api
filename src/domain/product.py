@@ -8,4 +8,4 @@ class Product(BaseModel):
     stock: int = Field(..., ge=0)
 
     class Config:
-        from_atributes = True
+        from_attributes = True

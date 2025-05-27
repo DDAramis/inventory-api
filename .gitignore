@@ -13,3 +13,5 @@ __pycache__/
 
 # Archivos de compilación de Docker (si aplican más adelante)
 *.docker
+
+test_dotenv.py
