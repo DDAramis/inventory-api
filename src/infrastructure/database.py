@@ -7,25 +7,35 @@ from pathlib import Path
 
 load_dotenv(dotenv_path=Path(__file__).resolve().parent.parent.parent / ".env")
 
-DATABASE_URL = os.getenv("DATABASE_URL")
+ENVIRONMENT = os.getenv("ENVIRONMENT", "development")
+if ENVIRONMENT == "development":
+    DATABASE_URL = os.getenv("DATABASE_URL_LOCAL")
+else:
+    DATABASE_URL = os.getenv("DATABASE_URL_SUPABASE")
+
 if not DATABASE_URL:
-    raise ValueError("DATABASE_URL not found in environment variables, please set it." \
-    "if the .env file.")
+    raise ValueError(
+        f"DATABASE_URL for {ENVIRONMENT} not found in environment variables. "
+        "Please set DATABASE_URL_LOCAL or DATABASE_URL_SUPABASE in the .env file."
+    )
 print(f"Using database URL: {DATABASE_URL}")
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
+
 class ProductDB(Base):
     __tablename__ = "products"
 
-    id = Column(Integer,primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True)
     name = Column(String(100), nullable=False)
     price = Column(Float, nullable=False)
     stock = Column(Integer, nullable=False)
 
+
 def init_db():
     Base.metadata.create_all(bind=engine)
+
 
 def get_db():
     db = SessionLocal()
