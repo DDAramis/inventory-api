@@ -7,14 +7,15 @@ PostgreSQL: Base de datos relacional (soporte para Supabase y PostgreSQL local).
 SQLAlchemy: ORM para interactuar con la base de datos.
 Pydantic: Validación de datos.
 Pytest: Pruebas automatizadas.
-Docker: Contenerización (pendiente de implementar).
+Docker: Contenerización.
 Sentry: Monitoreo de errores (pendiente de implementar).
 Prometheus: Métricas de observabilidad (pendiente de implementar).
 
 Instalación
+Opción 1: Instalación manual
 
 Clona el repositorio:
-git clone https://github.com/aramisjakolic/inventory-api.git
+git clone https://github.com/DDAramis/inventory-api.git
 cd inventory-api
 
 
@@ -25,10 +26,10 @@ pip install -r requirements.txt
 
 
 Configura las variables de entorno en un archivo .env:
-PORT=8000
 ENVIRONMENT=development
 DATABASE_URL_LOCAL=postgresql://postgres:[YOUR_LOCAL_PASSWORD]@localhost:5432/inventario
 DATABASE_URL_SUPABASE=postgresql://[YOUR_SUPABASE_USER]:[YOUR_SUPABASE_PASSWORD]@[YOUR_SUPABASE_HOST]:5432/postgres?sslmode=require
+PORT=8000
 
 
 Reemplaza [YOUR_LOCAL_PASSWORD] con la contraseña de tu usuario postgres local.
@@ -38,6 +39,32 @@ Cambia ENVIRONMENT a production para usar Supabase, o mantén development para u
 
 Ejecuta el servidor:
 python -m src.main
+
+
+
+Opción 2: Usar Docker
+
+Asegúrate de tener Docker y Docker Compose instalados:
+docker --version
+docker-compose --version
+
+
+Configura las variables de entorno en un archivo .env:
+ENVIRONMENT=development
+DATABASE_URL_LOCAL=postgresql://postgres:[YOUR_LOCAL_PASSWORD]@localhost:5432/inventario
+DATABASE_URL_SUPABASE=postgresql://[YOUR_SUPABASE_USER]:[YOUR_SUPABASE_PASSWORD]@[YOUR_SUPABASE_HOST]:5432/postgres?sslmode=require
+PORT=8000
+
+
+Construye y ejecuta los contenedores:
+docker-compose up --build
+
+
+Para detener los contenedores:
+docker-compose down
+
+Para eliminar los datos de la base de datos:
+docker-compose down -v
 
 
 Accede a la API:
@@ -98,6 +125,8 @@ inventario-api/
 ├── .env                      # Variables de entorno (no en Git)
 ├── .gitignore                # Archivos ignorados
 ├── pytest.ini                # Configuración de Pytest
+├── Dockerfile                # Archivo para construir la imagen Docker
+├── docker-compose.yml        # Configuración de Docker Compose
 ├── LICENSE                   # Licencia MIT
 └── README.md                 # Documentación
 
@@ -110,7 +139,8 @@ Casos de uso (CreateProduct, GetAllProducts) implementados con CQRS.
 Repositorio (SQLProductRepository) implementado para conectar con la base de datos.
 Endpoints para crear y listar productos (POST /products, GET /products) disponibles.
 Pruebas automatizadas con Pytest implementadas y funcionando.
-Pendiente: Contenerización con Docker, observabilidad con Sentry y Prometheus.
+Contenerización con Docker y Docker Compose implementada y funcionando.
+Pendiente: Observabilidad con Sentry y Prometheus.
 
 Autor
 
