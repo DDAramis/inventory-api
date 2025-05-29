@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from typing import Optional
 
 class Product(BaseModel):
@@ -7,5 +7,4 @@ class Product(BaseModel):
     price: float = Field(..., gt=0)
     stock: int = Field(..., ge=0)
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)

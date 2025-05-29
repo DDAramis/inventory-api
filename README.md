@@ -1,12 +1,12 @@
 API de Gestión de Inventario
-API REST para gestionar productos y pedidos, desarrollada con FastAPI y PostgreSQL, siguiendo Clean Architecture y principios de CQRS. Este proyecto incluye desarrollo backend, soporte para múltiples entornos (local y en la nube), y está inspirado en plataformas que conectan proveedores y comercios, como Harmony.
+API REST para gestionar productos y pedidos, desarrollada con FastAPI y PostgreSQL, siguiendo Clean Architecture y principios de CQRS. Este proyecto incluye desarrollo backend, soporte para múltiples entornos (local y en la nube), pruebas automatizadas, y está inspirado en plataformas que conectan proveedores y comercios, como Harmony.
 Tecnologías
 
 FastAPI: Framework para la API REST.
 PostgreSQL: Base de datos relacional (soporte para Supabase y PostgreSQL local).
 SQLAlchemy: ORM para interactuar con la base de datos.
 Pydantic: Validación de datos.
-Pytest: Pruebas automatizadas (en proceso de implementación).
+Pytest: Pruebas automatizadas.
 Docker: Contenerización (pendiente de implementar).
 Sentry: Monitoreo de errores (pendiente de implementar).
 Prometheus: Métricas de observabilidad (pendiente de implementar).
@@ -66,6 +66,25 @@ Respuesta esperada:
 
 
 
+Pruebas
+El proyecto incluye pruebas automatizadas con Pytest. Para ejecutar las pruebas:
+
+Asegúrate de que el entorno virtual está activado:
+source venv/bin/activate  # En Windows: venv\Scripts\activate
+
+
+Ejecuta las pruebas:
+pytest tests/test_product_routes.py -v
+
+
+
+Las pruebas cubren:
+
+Verificación de rutas disponibles.
+Creación de productos.
+Listado de productos.
+Validación de datos (por ejemplo, precios inválidos).
+
 Estructura del proyecto
 inventario-api/
 ├── src/
@@ -74,10 +93,11 @@ inventario-api/
 │   ├── domain/               # Entidades (product.py)
 │   ├── infrastructure/       # Implementaciones (database.py, product_repository.py)
 │   └── main.py               # Punto de entrada
-├── tests/                    # Pruebas (pendiente de implementar)
+├── tests/                    # Pruebas (test_product_routes.py, conftest.py)
 ├── requirements.txt          # Dependencias
 ├── .env                      # Variables de entorno (no en Git)
 ├── .gitignore                # Archivos ignorados
+├── pytest.ini                # Configuración de Pytest
 ├── LICENSE                   # Licencia MIT
 └── README.md                 # Documentación
 
@@ -89,7 +109,8 @@ Tabla products creada con columnas id, name, price, y stock.
 Casos de uso (CreateProduct, GetAllProducts) implementados con CQRS.
 Repositorio (SQLProductRepository) implementado para conectar con la base de datos.
 Endpoints para crear y listar productos (POST /products, GET /products) disponibles.
-Pendiente: Pruebas automatizadas con Pytest, contenerización con Docker, observabilidad con Sentry y Prometheus.
+Pruebas automatizadas con Pytest implementadas y funcionando.
+Pendiente: Contenerización con Docker, observabilidad con Sentry y Prometheus.
 
 Autor
 
