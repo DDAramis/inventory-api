@@ -7,8 +7,13 @@ from pathlib import Path
 load_dotenv(dotenv_path=Path(__file__).resolve().parent.parent.parent / ".env")
 
 ENVIRONMENT = os.getenv("ENVIRONMENT", "development")
+IS_DOCKER = os.getenv("IS_DOCKER", "false").lower() == "true"
+
 if ENVIRONMENT == "development":
-    DATABASE_URL = os.getenv("DATABASE_URL_LOCAL")
+    if IS_DOCKER:
+        DATABASE_URL = "postgresql://postgres:postgres@db:5432/inventario"
+    else:
+        DATABASE_URL = os.getenv("DATABASE_URL_LOCAL")
 else:
     DATABASE_URL = os.getenv("DATABASE_URL_SUPABASE")
 

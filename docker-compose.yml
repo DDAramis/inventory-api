@@ -6,10 +6,12 @@ services:
     ports:
       - "8000:8000"
     environment:
+      - IS_DOCKER=true
       - ENVIRONMENT=${ENVIRONMENT}
       - DATABASE_URL_LOCAL=${DATABASE_URL_LOCAL}
       - DATABASE_URL_SUPABASE=${DATABASE_URL_SUPABASE}
       - PORT=${PORT}
+      - SENTRY_DSN=${SENTRY_DSN}
     depends_on:
       - db
     volumes:
