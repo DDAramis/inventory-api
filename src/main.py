@@ -2,6 +2,7 @@ import sys
 import os
 from pathlib import Path
 import logging
+import sentry_sdk
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse
 from dotenv import load_dotenv
@@ -25,6 +26,12 @@ try:
 except Exception as e:
     logger.error(f"Failed to load environment variables: {str(e)}")
     raise
+
+sentry_sdk.init(
+    dsn=os.getenv("SENTRY_DSN"),
+    traces_sample_rate=1.0,
+    environment=os.getenv("ENVIRONMENT", "development"),
+)
 
 app = FastAPI(
     title="API de Gestión de Inventario",
