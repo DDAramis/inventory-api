@@ -20,7 +20,6 @@ handler.setFormatter(formatter)
 logger.handlers = [handler]
 
 sys.path.append(str(Path(__file__).resolve().parent.parent))
-
 try:
     load_dotenv(dotenv_path=Path(__file__).resolve().parent.parent / ".env")
     logger.info("Environment variables loaded successfully")
@@ -34,8 +33,8 @@ sentry_sdk.init(
     environment=os.getenv("ENVIRONMENT", "development"),
 )
 
-REQUEST_COUNT = Counter=('api_requests_total', 'Total number of API requests', ['method', 'endpoint'])
-REQUEST_LATENCY = Histogram('api_request_latancy_seconds', 'API request latancy in seconds', ['method', 'endpoint'])
+REQUEST_COUNT = Counter('api_requests_total', 'Total number of API requests', ['method', 'endpoint'])
+REQUEST_LATENCY = Histogram('api_request_latency_seconds', 'API request latency in seconds', ['method', 'endpoint'])
 
 app = FastAPI(
     title="API de Gestión de Inventario",
@@ -43,9 +42,29 @@ app = FastAPI(
     version="0.1.0",
 )
 
+
+@app.middleware("http")
+async def add_prometheus_metrics(request: Request, call_next):
+    method = request.method
+    endpoint = request.url.path
+    logger.info(f"Recording metrics for {method} {endpoint}")
+    REQUEST_COUNT.labels(method=method, endpoint=endpoint).inc()
+
+    import time
+    start_time = time.time()
+    response = await call_next(request)
+    duration = time.time() - start_time
+
+    REQUEST_LATENCY.labels(method=method, endpoint=endpoint).observe(duration)
+    logger.info(f"Request latency for {method} {endpoint}: {duration} seconds")
+    return response
+
+
 @app.get("/metrics")
 async def metrics():
-    return PlainTextResponse(generate_latest(REGISTRY))
+    metrics_data = generate_latest(REGISTRY)
+    logger.info("Serving Prometheus metrics")
+    return PlainTextResponse(metrics_data)
 
 
 try:
@@ -61,9 +80,11 @@ try:
 except Exception as e:
     logger.error(f"Failed to initialize database: {str(e)}")
 
+
 @app.get("/")
 async def root():
     return {"message": "¡Bienvenido a la API de Gestión de Inventario!"}
+
 
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):
@@ -72,6 +93,7 @@ async def global_exception_handler(request: Request, exc: Exception):
         status_code=500,
         content={"detail": f"Internal server error: {str(exc)}"}
     )
+
 
 if __name__ == "__main__":
     import uvicorn
