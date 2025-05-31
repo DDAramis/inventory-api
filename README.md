@@ -37,8 +37,8 @@ pip install -r requirements.txt
 
 Configura las variables de entorno en un archivo .env:
 ENVIRONMENT=development
-DATABASE_URL_LOCAL=postgresql://postgres:[YOUR_LOCAL_PASSWORD]@localhost:5432/inventario
-DATABASE_URL_SUPABASE=postgresql://[YOUR_SUPABASE_USER]:[YOUR_SUPABASE_PASSWORD]@[YOUR_SUPABASE_HOST]:6543/postgres?sslmode=require
+DATABASE_URL_LOCAL=postgresql://postgres:[YOUR_LOCAL_PASSWORD]@localhost:xxxx/inventario
+DATABASE_URL_SUPABASE=postgresql://[YOUR_SUPABASE_USER]:[YOUR_SUPABASE_PASSWORD]@[YOUR_SUPABASE_HOST]:xxxx/postgres?sslmode=require
 PORT=8000
 SENTRY_DSN=https://your-sentry-dsn@oYOUR_ORG_ID.ingest.us.sentry.io/YOUR_PROJECT_ID
 
@@ -63,8 +63,8 @@ docker-compose --version
 
 Configura las variables de entorno en un archivo .env:
 ENVIRONMENT=development
-DATABASE_URL_LOCAL=postgresql://postgres:[YOUR_LOCAL_PASSWORD]@localhost:5432/inventario
-DATABASE_URL_SUPABASE=postgresql://[YOUR_SUPABASE_USER]:[YOUR_SUPABASE_PASSWORD]@[YOUR_SUPABASE_HOST]:6543/postgres?sslmode=require
+DATABASE_URL_LOCAL=postgresql://postgres:[YOUR_LOCAL_PASSWORD]@localhost:xxx/inventario
+DATABASE_URL_SUPABASE=postgresql://[YOUR_SUPABASE_USER]:[YOUR_SUPABASE_PASSWORD]@[YOUR_SUPABASE_HOST]:xxxx/postgres?sslmode=require
 PORT=8000
 SENTRY_DSN=https://your-sentry-dsn@oYOUR_ORG_ID.ingest.us.sentry.io/YOUR_PROJECT_ID
 
