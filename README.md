@@ -9,7 +9,7 @@ Pydantic: Validación de datos.
 Pytest: Pruebas automatizadas.
 Docker: Contenerización.
 Sentry: Monitoreo de errores.
-Prometheus: Métricas de observabilidad (pendiente de implementar).
+Prometheus: Métricas de observabilidad.
 
 Instalación
 Opción 1: Instalación manual
@@ -107,6 +107,33 @@ Respuesta esperada:
 Verifica en tu panel de Sentry que el error se haya registrado.
 
 
+Observabilidad con Prometheus
+El proyecto incluye métricas de observabilidad con Prometheus, que recopila datos sobre las solicitudes a la API.
+
+Asegúrate de que los contenedores estén corriendo (ver Opción 2: Usar Docker).
+
+Accede a la interfaz de Prometheus:
+
+Abre tu navegador y visita: http://localhost:9090
+
+
+Consulta las métricas:
+
+En la interfaz de Prometheus, busca las siguientes métricas:
+api_requests_total: Número total de solicitudes a la API, etiquetadas por método HTTP y endpoint.
+Ejemplo de consulta: api_requests_total{method="POST", endpoint="/products"}
+
+
+api_request_latency_seconds: Latencia de las solicitudes en segundos, etiquetadas por método HTTP y endpoint.
+Ejemplo de consulta: histogram_quantile(0.95, sum(rate(api_request_latency_seconds_bucket{method="POST", endpoint="/products"}[5m])) by (le))
+
+
+
+
+
+Estas métricas te permiten monitorear el rendimiento y el uso de la API.
+
+
 Pruebas
 El proyecto incluye pruebas automatizadas con Pytest. Para ejecutar las pruebas:
 
@@ -142,6 +169,7 @@ inventario-api/
 ├── pytest.ini                # Configuración de Pytest
 ├── Dockerfile                # Archivo para construir la imagen Docker
 ├── docker-compose.yml        # Configuración de Docker Compose
+├── prometheus.yml            # Configuración de Prometheus
 ├── LICENSE                   # Licencia MIT
 └── README.md                 # Documentación
 
@@ -156,7 +184,7 @@ Endpoints para crear y listar productos (POST /products, GET /products) disponib
 Pruebas automatizadas con Pytest implementadas y funcionando.
 Contenerización con Docker y Docker Compose implementada y funcionando.
 Monitoreo de errores con Sentry implementado y funcionando.
-Pendiente: Observabilidad con Prometheus.
+Métricas de observabilidad con Prometheus implementadas y funcionando.
 
 Autor
 

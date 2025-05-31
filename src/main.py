@@ -4,10 +4,11 @@ from pathlib import Path
 import logging
 import sentry_sdk
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, PlainTextResponse
 from dotenv import load_dotenv
 from src.infrastructure.database import init_db
 from src.api.product_routes import router as product_router
+from prometheus_client import Counter, Histogram, generate_latest, REGISTRY
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', force=True)
 logger = logging.getLogger(__name__)
@@ -33,11 +34,19 @@ sentry_sdk.init(
     environment=os.getenv("ENVIRONMENT", "development"),
 )
 
+REQUEST_COUNT = Counter=('api_requests_total', 'Total number of API requests', ['method', 'endpoint'])
+REQUEST_LATENCY = Histogram('api_request_latancy_seconds', 'API request latancy in seconds', ['method', 'endpoint'])
+
 app = FastAPI(
     title="API de Gestión de Inventario",
     description="API REST para gestionar productos y pedidos con Clean Architecture",
     version="0.1.0",
 )
+
+@app.get("/metrics")
+async def metrics():
+    return PlainTextResponse(generate_latest(REGISTRY))
+
 
 try:
     app.include_router(product_router)
