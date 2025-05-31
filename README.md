@@ -1,5 +1,15 @@
 API de Gestión de Inventario
-API REST para gestionar productos y pedidos, desarrollada con FastAPI y PostgreSQL, siguiendo Clean Architecture y principios de CQRS. Este proyecto incluye desarrollo backend, soporte para múltiples entornos (local y en la nube), pruebas automatizadas, y está inspirado en plataformas que conectan proveedores y comercios, como Harmony.
+API REST para gestionar productos y pedidos, desarrollada con FastAPI y PostgreSQL, siguiendo Clean Architecture y principios de CQRS. Este proyecto está diseñado para conectar proveedores y comercios, inspirado en plataformas como Harmony. Incluye soporte para múltiples entornos (local y en la nube), pruebas automatizadas, contenerización, y observabilidad, lo que lo hace ideal para demostrar habilidades de desarrollo backend profesional.
+Características
+
+Gestión de productos: Crea y lista productos con endpoints REST.
+Clean Architecture: Código organizado en capas (dominio, aplicación, infraestructura).
+CQRS: Separación de comandos (crear) y consultas (listar).
+Soporte multi-entorno: Compatible con PostgreSQL local y Supabase.
+Pruebas automatizadas: Tests unitarios con Pytest.
+Contenerización: Docker y Docker Compose para despliegue.
+Observabilidad: Monitoreo de errores con Sentry y métricas con Prometheus.
+
 Tecnologías
 
 FastAPI: Framework para la API REST.
@@ -107,33 +117,42 @@ Respuesta esperada:
 Verifica en tu panel de Sentry que el error se haya registrado.
 
 
-Observabilidad con Prometheus
-El proyecto incluye métricas de observabilidad con Prometheus, que recopila datos sobre las solicitudes a la API.
+Observabilidad
+Monitoreo de errores con Sentry
+Sentry captura errores y excepciones en la API. Si ocurre un error (como enviar un precio inválido), puedes verlo en tu panel de Sentry con detalles como el stack trace y la solicitud que lo causó.
+Métricas con Prometheus
+Prometheus recopila métricas sobre el rendimiento y uso de la API. Las métricas disponibles incluyen:
+
+api_requests_total: Número total de solicitudes, etiquetado por método HTTP y endpoint.
+api_request_latency_seconds: Latencia de las solicitudes en segundos, etiquetado por método HTTP y endpoint.
+
+Acceder a Prometheus
 
 Asegúrate de que los contenedores estén corriendo (ver Opción 2: Usar Docker).
 
-Accede a la interfaz de Prometheus:
-
 Abre tu navegador y visita: http://localhost:9090
-
 
 Consulta las métricas:
 
-En la interfaz de Prometheus, busca las siguientes métricas:
-api_requests_total: Número total de solicitudes a la API, etiquetadas por método HTTP y endpoint.
-Ejemplo de consulta: api_requests_total{method="POST", endpoint="/products"}
+Número de solicitudes:
+Consulta: api_requests_total{method="POST", endpoint="/products"}
+Esto muestra cuántas solicitudes POST se han hecho al endpoint /products.
 
 
-api_request_latency_seconds: Latencia de las solicitudes en segundos, etiquetadas por método HTTP y endpoint.
-Ejemplo de consulta: histogram_quantile(0.95, sum(rate(api_request_latency_seconds_bucket{method="POST", endpoint="/products"}[5m])) by (le))
+Latencia (percentil 95):
+Consulta: histogram_quantile(0.95, sum(rate(api_request_latency_seconds_bucket{method="POST", endpoint="/products"}[5m])) by (le))
+Esto muestra el percentil 95 de la latencia de las solicitudes POST a /products, útil para detectar cuellos de botella.
+
+
+Tasa de solicitudes por segundo:
+Consulta: rate(api_requests_total{method="POST", endpoint="/products"}[5m])
+Esto muestra la tasa de solicitudes por segundo en los últimos 5 minutos.
 
 
 
 
 
-Estas métricas te permiten monitorear el rendimiento y el uso de la API.
-
-
+Estas métricas te permiten monitorear el rendimiento y detectar problemas como picos de latencia o errores frecuentes.
 Pruebas
 El proyecto incluye pruebas automatizadas con Pytest. Para ejecutar las pruebas:
 
@@ -185,6 +204,35 @@ Pruebas automatizadas con Pytest implementadas y funcionando.
 Contenerización con Docker y Docker Compose implementada y funcionando.
 Monitoreo de errores con Sentry implementado y funcionando.
 Métricas de observabilidad con Prometheus implementadas y funcionando.
+
+Contribución
+
+Fork el repositorio y clónalo localmente:
+git clone https://github.com/YOUR_USERNAME/inventory-api.git
+cd inventory-api
+
+
+Crea una rama para tu contribución:
+git checkout -b feature/nueva-funcionalidad
+
+
+Haz tus cambios y commitea:
+git add .
+git commit -m "Add nueva funcionalidad"
+
+
+Sube tus cambios a tu fork:
+git push origin feature/nueva-funcionalidad
+
+
+Crea un Pull Request desde tu fork al repositorio principal, describiendo tus cambios.
+
+
+Notas:
+
+Sigue las convenciones de código existentes (PEP 8 para Python).
+Añade pruebas para cualquier nueva funcionalidad.
+Asegúrate de que todas las pruebas pasen antes de enviar tu PR (pytest tests/).
 
 Autor
 
